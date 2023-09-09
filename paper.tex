@@ -1,0 +1,594 @@
+\documentclass[9pt]{article}
+\usepackage{latexsym,amsthm,amssymb,amscd}
+\usepackage[]{algorithm2e}
+\usepackage{lipsum}
+\linespread{1.15}
+\usepackage{graphicx,multicol,doc,amsfonts,amsmath,graphics,float}
+\usepackage{epstopdf}
+\usepackage{cite}
+\usepackage[latin1]{inputenc}
+\pagestyle{plain} \topmargin=-0.80cm
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{color}
+\setlength{\oddsidemargin}{0cm} \textwidth=16cm \textheight=23cm
+\usepackage{cite,latexsym}
+%%%%%%%%%%%%%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{Lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+%\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{summary}[theorem]{Summary}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{problem}[theorem]{Problem}
+%\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%    Ahmadi def    %%%%%
+%%%%%%%%%%% mathbb  %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\red}{\textcolor[rgb]{1.00,0.00,0.00}}
+\newcommand{\blue}{\textcolor[rgb]{0.00,1.00,0.00}}
+%%%%%%%%%%%%%%  \mathcal %%%%%%%%%%%%%%%%%%%
+\newcommand{\OO}{\ensuremath{\mathcal{O}}}
+\newcommand{\X}{\ensuremath{\mathcal{X}}}
+\newcommand{\calp}{\ensuremath{\mathcal{P}}}
+%%%%%%%%% beautiful bold %%%%%%%%%%%%%%%%%%%
+\def\bfm#1{\protect{\makebox{\boldmath $#1$}}}
+\def\x {\bfm{x}}
+\def\y {\bfm{y}}
+\def\t {\bfm{t}}
+\def\z {\bfm{z}}
+\def\a {\bfm{a}}
+\def\A {\bfm{A}}
+\def\b {\bfm{b}}
+\def\c {\bfm{c}}
+\def\uu {\bfm{u}}
+\def\f {\bfm{f}}
+\def\nn {\bfm{n}}
+\def\q {\bfm{q}}
+\def\z {\bfm{z}}
+\def\r {\bfm{r}}
+\def\p {\bfm{p}}
+\def\T {\bfm{T}}
+\def\mmu {\bfm{\mu}}
+\def\bbeta {\bfm{\beta}}
+\def\ppsi {\bfm{\psi}}
+\def\oomega {\bfm{\omega}}
+\def\aalpha {\bfm{\alpha}}
+\def\nnabla{\bfm{\nabla}}
+\def\nnu{\bfm{\nu}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{An error estimate of a direct RBF partition of unity method  for a nonlinear fractional parabolic equation}
+\author{Banafsheh  Raeisi, Mohammadreza Ahmadi Darani \normalsize{
+          \thanks{E-mail address: \texttt{ahmadi.darani@sku.ac.ir}},   Mojtaba Fardi}\\
+          \footnotesize{
+                        \em Department  of  Applied Mathematics, Faculty  of  Mathematical Sciences,
+                       }\\
+                       \footnotesize{
+                        \em  Shahrekord University , P.O. Box. 115,
+                        Shahrekord, Iran.
+                       }
+                       %\footnotesize{
+%                        \em ADDRESS
+%                       }\\
+%                       \footnotesize{
+%                        \em ADDRESS
+%                       }\\
+        }
+\date{}
+\newlength\Colsep
+\setlength\Colsep{10pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+\begin{abstract}
+This paper analyzes a new localized RBF method called the direct partition of unity method for a nonlinear fractional parabolic equation. A framework for the proposed method for the problem mentioned above is provided. The convergence analysis of the method is examined, and an error bound is obtained for the local approximation. This error bound is obtained by considering conditions on the eigenvalues of the Laplacian operator matrix. In the end, a numerical example is presented to validate the accuracy and reliability of the proposed method. In this numerical simulation, the consistency of the numerical and the theoretical results is checked.
+\end{abstract}
+\hskip0.5cm \textbf{Keywords}: Radial base function; Partition of unity; Fractional parabolic equation; Error estimate; Eigenvalues; 
+\section{Introduction}\label{Sec1}
+The early development of meshless methods is Smoothed Particle Hydrodynamic scheme (SPH) introduced by Gingold and Monagha \cite{Monagha} for astrophysics modeling. SPH expands a Lagrange scheme based on the kernel approximation. While SPH and their reformed coincidences were strong form-based, other methods were expanded in the 1990s, based on a weak form. Initially, the Element Free Galerkin (EFG) method engaged MLS with Lagrange multipliers to impose boundary conditions by Belytschko et al. \cite{Belytschko}. The meshless Local Petrov-Galerkin (MLPG) method is based on a Petrov Galerkin formulation in which weight and trial functions used in the weak form of the equations need not be the same \cite{Atluri}.\\
+The Radial basis function (RBF) mesh-less method is one of the implementations for approximation the solution of the PDEs on scattered nodes. Among the important advantages of approximation with infinity smooth RBFs for PDEs with smooth solution are flexibility with respect to geometry and dimension and spectral convergence for nontrivial geometries \cite{Rieger1,Rieger2}. Although the global RBF approximations use scattered points and do not need mesh generation, they generate full and ill-conditioned matrices, which make them restricted for large-scale problem. To overcome this problems, compactly supported RBFs such as Wendland's function has been suggested. Also, localized approaches, such as RBF-FD and RBF-PU methods, have been developed in this direction.\\
+The RBF-FD method was developed in \cite{Fornberg} and is known as a generalization of finite difference methods, but the stencils are constructed on scattered nodes in irregular geometries. The PU technique has been introduced by Shepard for interpolation purposes \cite{Shepard}. The method involves decomposing the domain into overlapping subdomains that cover the original domain. The global solution is then constructed based on the local approximations on each patch and a set of smooth PU weight functions.\\
+Recently, Mirzaei proposed a new version of the PU method called D-RBF-PU, which avoids all derivatives of PU weight functions and implies the approach in many circumstances \cite{refk1}.
+In this paper, we consider  the following nonlinear fractional initial-boundary value equation
+\begin{equation}\label{1}
+\left\{
+  \begin{array}{ll}
+  \partial^{q}_{t}v(\x,t)=\mathbf{A}v(\x,t)+\Psi(v(x,t))+f(\x,t),~  (\x,t)\in \Omega \times(0,T]  ,\\
+    \mathbf{A}v(\x,t)=\sigma_1\triangle v(\x,t)-\sigma_2 \nabla v(\x,t)-\lambda v(\x,t),
+  \end{array}
+\right.
+	\end{equation}
+with the boundary condition
+	\begin{equation}\label{2}
+v(\x,t)=h(\x,t) , (\x,t)\in \partial \Omega \times(0,T],
+		\end{equation}
+coupled with standard initial conditions of Cauchy type
+\begin{equation}\label{3}
+   v(\x,0)=g(\x),\x \in \bar{\Omega},
+		\end{equation}
+where $\x=(x_{1},x_{2})$; $\Omega~\subset \mathbb{R}^2$;  $\partial \Omega$ is boundary of $\Omega$; the function
+$f$ is sufficiently smooth; $\sigma_1,\sigma_2>0,\lambda>0$; and $\partial^{q }_{t}v$ denotes the Caputo derivative
+of order $0<q<1$:
+ \[  \partial^{q }_{t}v(t)=\int_0^{t}\varrho_{1-q }(t-s)v^{'}(s)ds,\varrho_{q }(t):=\dfrac{t^{q  -1}}{ \Gamma (q )} ,~ t \in (0,T]. \]
+This article deals with a localized RBF method for solving a nonlinear fractional parabolic equation. In the proposed method, a semi-discrete problem is obtained through the direct partition of unity method, and this spatial semi-discretization is done using the polyharmonic splines. Another main goal of this paper is that an error bound is given for the local approximation and it is shown in the numerical simulation that the numerical results confirm the theoretical results.\\
+The paper is structured as follows: In section \ref{Sec2}, we present the direct partition of unity method for solving a nonlinear fractional parabolic equation on regular and irregular domains. In section \ref{Sec3}, we investigate the convergence of the proposed method and obtain an error bound for the local approximation. In section \ref{Sec4}, we conduct a numerical experiment to demonstrate the accuracy and capability of the proposed method. 
+\section{Numerical Method}\label{Sec2}
+In this section, we investigate a reliable framework based on direct RBF partition of unity to solve problem (\ref{1})-(\ref{3}).  To provide a stable evaluation, the local approximations on the subdomains are computed and joined together by unit functions to obtain a global approximation. The fulfillment of the proposed method is based on the partitioning of the main domain into a set of overlapping subdomains and the derive the global approximation from the linear
+combination of local approximations. It is worth
+noting that we replace an ill-conditioned problem with several well-conditioned problems. The implementation of this method reduces the computational cost. 
+\subsection{Space semidiscretization} 
+Let $\Omega\subset \mathbb{R}^d$ be an open set and $\{\Omega_i:i \in I\}$ be an open cover of $\Omega$ satisfying a pointwise overlap condition:
+there exists a positive integer $M$ such that any $\x \in \Omega$,
+\begin{eqnarray*}
+\mathrm{card}\{i:\x \in \Omega_i\}\leq M.
+\end{eqnarray*}
+A partition of unity subordinate to the covering is a family $\{\omega_i:\Omega\rightarrow \mathbb{R}_{+}|i\in I\}$ of
+continuous functions such that
+\begin{description}
+  \item[(i)] $\mathcal{U}=\{\mathrm{supp}~ \omega_i=\overline{\omega_i^{-1}(\mathbb{R}\setminus\{0\})}:i \in I\}$ is a locally finite covering of $\Omega$,
+  \item[(ii)] $\omega_i(\x) \geq 0$ for all $\x \in \Omega$, $i \in I$ and $\sum_{i\in I}\omega_{i}=1$ for all $\x \in \Omega$.
+\end{description}
+Consider the set of trial point in patches $\Omega_{i}$ by $X_{i},i=1:N_{c}$ and also $J(\Omega_{i})=\{k: \x_{k} \in \Omega_{i}\}.$ Suppose that the polyharmonic kernel $\phi _{m,d}$ be conditionally positive definite of order $m$ i.e.,
+\begin{eqnarray*}
+\phi_{m,d}(r):=\left\{
+                 \begin{array}{ll}
+                   r^{2m-d}\log r, & 2m-d=2,4,\cdots, \\
+                   r^{2m-d}, & 2m-d=1,3,\cdots,
+                 \end{array}
+               \right.
+\end{eqnarray*}
+Suppose that the local approximation space is given by
+\begin{eqnarray}\label{a11}
+\mathbb{V}_{i}=\mathbb{V}_{\phi,X_{i}}:=\mathrm{span}\{\phi(\cdot,\x_{j})\}_{j \in J(\Omega_{i})}\oplus \Pi^{d}_{m-1},\nonumber
+\end{eqnarray}
+where $\phi$ is a conditionally positive definite function with respect $\Pi^{d}_{m-1}$.\\
+The global approximation function $\widetilde{v}$ of $v$ on $\Omega$ is considered as
+\begin{eqnarray}\label{a10}
+\widetilde{v}_{\phi,X}(\x)=\sum_{i=1}^{N_{c}}\mathrm{w}_{i}(\x)\widetilde{v}_{\phi,X_i}(\x)=\sum_{i \in I(\x)}\mathrm{w}_{i}(\x)\widetilde{v}_{\phi,X_i}(\x),
+\end{eqnarray}
+We can express the local approximant $\widetilde{v}_{\phi,X_i}$  in the Lagrange form as follows
+\begin{eqnarray}\label{a12}
+\widetilde{v}_{\phi,X_i}(\x)=\sum_{j \in J( \Omega_{i})}l_{j}(i;\x)v(x_{j}).
+\end{eqnarray}
+ For standard RBF-based PU, the differential operator $D^{\mu}$ must operate on  $\mathrm{w}_{i}(x)l_{j}(i;:)$, which causes some computational complications. To overcome this complexity, the author of \cite{refk1} introduce a new RBF-PU method known as direct RBF-based PU method (or D-RBF-based PU method).
+ In D-RBF-PU method, the operator $D^{\mu}$ can
+be directly approximated using a RBF-based PU interpolant and therefore $D^{\mu}v(x)$ is approximated as
+\begin{equation}\label{28}
+D^{\mu}v(x)\approx\sum_{i \in I(\x)}\sum_{j \in J(\Omega_{i})} \left(\mathrm{w}_{i}(\x)D^{\mu} l_{j}(i;\x)\right)v(\x_{j})=\widetilde{v}^D_{\phi,X}.
+\end{equation}
+Compared to the standard RBF-based PU method, the differential operator $D^{\mu}$ only operate on Lagrangian functions and there is no need to calculate the derivatives of weight functions.\\
+\begin{theorem}\label{th1}
+ Assume that $m>k+\frac{d}{2}$ and $\Omega \subseteq \mathbb{R}^{d}$ is open and bounded and $X=\{\x_{k}\}_{k=1}^{N} \in \Omega \subseteq \mathbb{R}^{d}$ are given. Let $C_{\Omega}$ be a covering for $(\Omega,X)$ and $\{\mathrm{w}_{i}\}_
+{i=1}^{N_{c}}$ be a PU with respect to the covering $C_{\Omega}$. Suppose that each patches $\Omega_{i}$ satisfies an interior cone condition. If  $\widetilde{v}_{\phi _{m,d},X}$ is the RBF interpolant
+by the polyharmonic kernel $\phi _{m,d}$ for $v\in W_{2}^{m}(\Omega)\cap W_{\infty}^{k}(\Omega)$  on $X\subset \Omega$, then the approximation function \eqref{28} satisfies
+\begin{equation*}
+ |(D^{\mu}v-\widetilde{v}^D_{\phi _{m,d},X}(\x)| \lesssim h_{X,\Omega}^{m-k-d/2}\Vert v\Vert _{ W_{2}^{m}(\Omega)},~\x\in \Omega,~\forall |\mu|\leq k
+ \end{equation*}
+for sufficiently small values of $h_{X,\Omega}$.
+\end{theorem}
+We investigate the  D-RBF-PU  method for solving (\ref{1})-(\ref{3})
+Suppose that the set of evaluation points in $\Omega\cup \partial \Omega$ is coincide with the set of trial points, i.e. $X=Y=\{\x_{1},\x_{2},\cdots,\x_{N}\}$. Assume that $Y=X_{\Omega}\cup X_{\partial \Omega}$ and $X_{\Omega}\bigcap X_{\partial \Omega}={\O}$ such that $|X_{\Omega}|=N^{(1)}$ and $|X_{\partial \Omega}|=N^{(2)}$ and
+\[X_{\Omega}=\{\x_{1},\x_{2},\cdots,\x_{N^{(1)}}\},X_{\partial \Omega}=\{\x_{N^{(1)}+1},\x_{N^{(1)}+2},\cdots,\x_{N}\}.\]
+First, the values $v(\x,t)$ and $\mathbf{A} v(\x,t)$  for
+a fixed point $\x$ must be approximated via
+\begin{eqnarray}\label{ABaf20}
+v(\x,t)\approx \widetilde{v}(\x,t)=\sum_{i \in I(\x)}\sum_{j \in J(\Omega_{i})}\left(\omega_{i}(\x)l_{j}(i;\x)\right)v(\x_{j},t),~\x \in \Omega \cup \partial \Omega,
+\end{eqnarray}
+and
+\begin{eqnarray}\label{ABaf19}
+\mathbf{A} v(\x,t)\approx \mathbf{A} \widetilde{v}(\x,t)=\sum_{i \in I(\x)}\sum_{j \in J(\Omega_{i})}\left(\omega_{i}(\x)\mathbf{A}l_{j}(i;\x)\right)v(\x_{j},t),~ \x \in \Omega,
+\end{eqnarray}
+where $J(\Omega_{i})=\{j\in \{1,2,\cdots,N\}|\x_{j}\in \Omega_{i}\}$;
+ $\{l_{1}(i;.),l_{2}(i;.),\cdots,l_{N_{i}}(i;.)\}$ are RBF Lagrange or cardinal basis associated to subdomain $\Omega_{i}$.\\
+Inserting in (\ref{1})-(\ref{3}) and replacing $\approx$ by $=$ lead the following linear system
+\begin{eqnarray*}
+\left[
+  \begin{array}{c}
+    \textbf{K}_{1}\left(\widehat{\textbf{v}}^{(q)}(t)\right)\\
+    \textbf{0}\\
+  \end{array}
+\right]=\left[
+          \begin{array}{cc}
+            \textbf{K}_{\mathbf{A}}  \\
+           \textbf{K}_{2} \\
+          \end{array}
+        \right]
+                  \widehat{\textbf{v}}(t) +\left[
+                         \begin{array}{c}
+                           \Psi(\textbf{K}_{1}\widehat{\textbf{v}}(t)) +\textbf{F}(t) \\
+                           -\textbf{H}(t) \\
+                         \end{array}
+                       \right]
+\end{eqnarray*}
+where
+\begin{eqnarray*}
+&&\textbf{K}_{1}(s,j)=\sum_{i \in I(\x_{s})}(\omega_{i}(\x)l_{j}(i;\x))_{\x=\x_{s}},~~s=1,2,\cdots,N^{(1)},j=1,2,\cdots,N,\\
+ &&\textbf{K}_{\mathbf{A}}(s,j)=\sum_{i \in I(\x_{s})}(\omega_{i}(\x)\mathbf{A}l_{j}(i;\x))_{\x=\x_{s}},~~s=1,2,\cdots,N^{(1)},j=1,2,\cdots,N,\\
+ &&\textbf{K}_{2}(s,j)=\sum_{i \in I(\x_{s})}(\omega_{i}(\x)l_{j}(i;\x))_{\x=\x_{s}},~~s=N^{(1)}+1,\cdots,N,j=1,2,\cdots,N,
+\end{eqnarray*}
+and
+$\widehat{\textbf{v}}(t)=[\widehat{v}_{1}(t),\widehat{v}_{2}(t),\cdots,\widehat{v}_{N}(t)]^{tr}$ is the approximate solution for $\textbf{v}(t)$.\\
+Here, we have
+\begin{eqnarray*}
+ \textbf{K}_{1}=[ \textbf{I}_{N^{(1)}\times N^{(1)}}~\textbf{0}_{N^{(1)}\times N^{(2)}}],~ \textbf{K}_{2}=[ \textbf{0}_{N^{(1)}\times N^{(1)}}~\textbf{I}_{N^{(1)}\times N^{(2)}}],~\textbf{K}_{\mathbf{A}}=[ \textbf{K}^{(\Omega)}_{\mathbf{A}}~\textbf{K}^{(\partial \Omega)}_{\mathbf{A}}].
+\end{eqnarray*}
+Suppose that
+\begin{eqnarray*}
+\widehat{\textbf{v}}_1(t)=[\widehat{v}_{1}(t),\widehat{v}_{2}(t),\cdots,\widehat{v}_{N^{(1)}}(t)]^{tr},~
+\widehat{\textbf{v}}_2(t)=[\widehat{v}_{N^{(1)}+1}(t),\widehat{v}_{N^{(1)}+2}(t),\cdots,\widehat{v}_{N}(t)]^{tr},
+\end{eqnarray*}
+therefore, the above system is rewritten as following
+\begin{eqnarray}\label{ki1q1}
+\left[
+  \begin{array}{c}
+    \widehat{\textbf{v}}_1^{(q )}(t)\\
+    \textbf{0}\\
+  \end{array}
+\right]=\left[
+          \begin{array}{cc}
+            \textbf{K}^{(\Omega)}_{\mathbf{A}} & \textbf{K}^{(\partial \Omega)}_{\mathbf{A}} \\
+           \textbf{0}_{N^{(1)}\times N^{(1)}}&\textbf{I}_{N^{(1)}\times N^{(2)}} \\
+          \end{array}
+        \right]\left[
+                 \begin{array}{c}
+                  \widehat{\textbf{v}}_1(t) \\
+                   \widehat{\textbf{v}}_2(t) \\
+                 \end{array}
+               \right]+\left[
+                         \begin{array}{c}
+                           \Psi(\widehat{\textbf{v}}_1(t)) +\textbf{F}(t) \\
+                           -\textbf{H}(t) \\
+                         \end{array}
+                       \right]
+\end{eqnarray}
+ \subsection{ A time discretization for (\ref{ki1q1}) } Now, we introduce a temporal discretization based on an uniform mesh for (\ref{ki1q1}). For positive integer $N_t$, we define an uniform partition on interval $\overline{J}=[0,T]$ as
+$J_{\delta t} =\{ t_{n}|~ t_{n}=n \delta t~,\delta t= \frac{T}{N_t} ,n=0:N_t\}$. According to \cite{alikhonov}, we discretize the Caputo fractional derivative $  \widehat{\textbf{v}}_{1}^{(q)}(t)$ by the high order $L2-1_{\sigma}$ difference formula. Denote $t_{n+\sigma}=\sigma t_{n+1}+(1-\sigma)t_n,$ for $n=0:N_t-1$. 
+Let $\sigma=1-\frac{\alpha}{2}$. Define
+ \begin{eqnarray*}
+ &&A_{s}^{\alpha,\sigma}=\left\{
+                         \begin{array}{ll}
+                           \sigma^{1-\alpha}, & s=0,\\
+                           (s+\sigma)^{1-\alpha}-(s-1+\sigma)^{1-\alpha}, & s\geq1,
+                         \end{array}
+                       \right.\\
+&&B_{s}^{\alpha,\sigma}=\frac{1}{2-\alpha}\left((s+\sigma)^{2-\alpha}-(s-1+\sigma)^{2-\alpha}\right)-\frac{1}{2}\left((s+\sigma)^{1-\alpha}+(s-1+\sigma))^{1-\alpha})\right),~s\geq1,\\
+&&C_{s}^{n,\alpha,\sigma}=\left\{
+                            \begin{array}{ll}
+                              A_{0}^{\alpha,\sigma}, & s=n=0, \\
+                               A_{0}^{\alpha,\sigma}+ B_{1}^{\alpha,\sigma}, & s=0,n\geq1, \\
+                               A_{s}^{\alpha,\sigma}+ B_{s+1}^{\alpha,\sigma}-B_{s}^{\alpha,\sigma}, & 1 \leq s\leq n-1\\
+                              A_{n}^{\alpha,\sigma}-B_{n}^{\alpha,\sigma}, & 1\leq s=n.
+                            \end{array}
+                          \right.
+ \end{eqnarray*}
+ For  $ \widehat{\textbf{v}}^{(q)}(t)$ at the point $t_{n+\sigma}$, one has
+\begin{eqnarray}\label{9}
+\widehat{\textbf{v}}_1^{(q)}(t_{n+\sigma})\approx \frac{\delta t^{-\alpha}}{\Gamma(2-\alpha)}\sum_{j=0}^{n}C_{n-j}^{n,\alpha,\sigma}(\widehat{\textbf{v}}_1(t_{j+1})-\widehat{\textbf{v}}_1(t_{j})),~n=0:N_t-1,
+\end{eqnarray}
+We know
+\begin{eqnarray*}
+    \widehat{\textbf{v}}_1(t_{n+\sigma})=\sigma \widehat{\textbf{v}}_1(t_{n+1})+(1-\sigma)\widehat{\textbf{v}}_1(t_{n})+O(\delta t^2),
+\end{eqnarray*}
+For approximation of $\Psi( \widehat{\textbf{v}}_1(t))$ and $\textbf{F}(t)$ at the point $t_{n+\sigma}$, one has 
+\[\Psi( \widehat{\textbf{v}}_1(t_{n+\sigma}))\approx \Psi( \sigma\widehat{\textbf{v}}_1(t_{n+1})+(1-\sigma)\widehat{\textbf{v}}_1(t_{n})).\]
+and
+\[\textbf{F}(t_{n+\sigma})\approx  \sigma\textbf{F}(t_{n+1})+(1-\sigma)\textbf{F}(t_{n}).\]
+ The nodal approximation to the solution $\widehat{\textbf{v}}_1$ computed at the point $t_{n}$ is denoted by $\widehat{\textbf{v}}_1^{(n)}\approx \widehat{\textbf{v}}_1(t_{n})$. Therefore, we can obtain an uniform time-stepping formulae utilizing a simple predictor-corrector method. Suppose that  $\widehat{\textbf{v}}_1^{n+1,l}$ is the approximation obtained for $\widehat{\textbf{v}}_1^{n+1}$ derived from the predictor-corrector method. Then, we can obtain
+\begin{eqnarray}\label{ki1q1-aab}
+&&\left[
+  \begin{array}{c}
+    \frac{\delta t^{-\alpha}}{\Gamma(2-\alpha)}\sum_{j=0}^{n}C_{n-j}^{n,\alpha,\sigma}(\widehat{\textbf{v}}_1^{j+1}-\widehat{\textbf{v}}_1^{j})\\
+    \textbf{0}\\
+  \end{array}
+\right]=\left[
+          \begin{array}{cc}
+            \textbf{K}^{(\Omega)}_{\mathbf{A}} & \textbf{K}^{(\partial \Omega)}_{\mathbf{A}} \\
+           \textbf{0}_{N^{(1)}\times N^{(1)}}&\textbf{I}_{N^{(1)}\times N^{(2)}} \\
+          \end{array}
+        \right]\left[
+                 \begin{array}{c}
+                  \widehat{\textbf{v}}_1^{n+1}\\
+                   \widehat{\textbf{v}}_2^{n+1}\\
+                 \end{array}
+               \right]\nonumber\\
+&&~~~~~~~~~~~~~+\left[
+                         \begin{array}{c}
+                            \Psi( \sigma\widehat{\textbf{v}}_1^{n+1,l}+(1-\sigma)\widehat{\textbf{v}}_1^{n}) +\sigma\textbf{F}^{n+1}+(1-\sigma)\textbf{F}^{n} \\
+                           -\textbf{H}(t) \\
+                         \end{array}
+                       \right].
+\end{eqnarray}
+Here $\widehat{\textbf{v}}_1^{n+1,0}=\widehat{\textbf{v}}_1^{n}$ and $\widehat{\textbf{v}}_1^{n+1,l}$ is obtained from the previous time level $n$. We iterate this $l$ times to obtain the stopping criteria $\|\widehat{\textbf{v}}_1^{n+1,l}-\widehat{\textbf{v}}_1^{n+1,l-1}\|_{\infty}\leq \epsilon$ for a predefined tolerance $\epsilon$.
+\section{Error Estimate}\label{Sec3}
+In this section, we give an error
+bound  for the local approximation by considering conditions
+on the eigenvalues of the Laplacian operator matrix.
+\begin{theorem}\label{uyo0}
+Let $\textbf{v}_1(t)$ and $\widehat{\textbf{v}}_1(t)$ be the exact and approximate solutions for (\ref{1})-(\ref{3}). Let $\textbf{K}^{(\Omega)}_{\mathbf{A}}$ be an invertible $N_{I}\times N_{I}$ square matrix. Suppose that there exists a constant $C_{lip}$ such that \[\|\Psi(\widehat{\textbf{v}}_1(t))-\Psi(\textbf{v}_1(t))\|_{\infty}\leq C_{lip} \|\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t)\|_{\infty}\]
+ and assume that all eigenvalues of $\textbf{K}^{(\Omega)}_{\mathbf{A}}$ satisfy
+$|arg(\lambda(\textbf{K}^{(\Omega)}_{\mathbf{A}}))|>\frac{q \pi}{2}$,
+ then there exists a positive constant $C$ such that
+\begin{eqnarray}\label{ret11}
+\|\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t)\|_{\infty}\leq C  \|(\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}\|_{\infty}\max_{0\leq s \leq t} \|\textbf{v}_{\mathbf{A}}(s)-\textbf{K}_{\mathbf{A}}\textbf{v}(s)\|_{\infty}~(\hbox{as} ~t \rightarrow \infty).
+\end{eqnarray}
+\end{theorem}
+\begin{corollary}
+Let $\textbf{v}(t)$ and $\widehat{\textbf{v}}(t)$ be the exact and approximate solutions for (\ref{1})-(\ref{3}). Let $\textbf{K}^{(\Omega)}_{\mathbf{A}}$ be an invertible $N_{I}\times N_{I}$ square matrix. If \[\|\Psi(\widehat{\textbf{v}}_1(t))-\Psi(\textbf{v}_1(t))\|_{\infty}\leq C_{lip} \|\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t)\|_{\infty}\]
+ and all eigenvalues of $\textbf{K}^{(\Omega)}_{\mathbf{A}}$ satisfy
+$|arg(\lambda(\textbf{K}^{(\Omega)}_{\mathbf{A}}))|>\frac{q \pi}{2}$,
+there exists a positive constant $C$ such that
+\begin{eqnarray*}
+\|\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t)\|_{\infty}\leq C\|(\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}\|_{\infty}h_{X,\Omega}^{m-k-d/2}\max_{0\leq s \leq t}\Vert v(s)\Vert _{ W_{2}^{m}(\Omega)}, ~(\hbox{as}~t \rightarrow \infty).
+\end{eqnarray*}
+for sufficiently small values of $h_{X,\Omega}$ and for all $v\in W_{2}^{m}(\Omega)\cap W_{\infty}^{k}(\Omega)$ with $m>k+d/2$.
+\end{corollary}
+\subsection{Proof of Theorem \ref{uyo0}}
+First, we state the two prerequisite lemmas and then prove Theorem \ref{uyo0}.
+\begin{lemma}\label{lemma1-1}
+(See \cite{Pod,Quin}) Suppose that $0<q<2$, $q^{\prime}$ is an arbitrary complex number and $\eta$ is an arbitrary real number such that $\frac{q\pi }{2}<\eta<\min\{\pi, q\pi\}$, then, for an arbitrary integer $j\geq1$, the following asymptotic expansion
+\begin{eqnarray*}
+E_{q ,q^{\prime} }(z)=-\sum_{k=1}^{j}\frac{1}{\Gamma(q^{\prime}-qk)}\frac{1}{z^k}+O\left( \frac{1}{|z|^{j+1}}\right),
+\end{eqnarray*}
+where $\eta\leq |arg(z)|\leq \pi$ and $|z|\geq0 $.
+\end{lemma}
+\begin{lemma}\label{lem-4-3}
+(See \cite{Quin}) Suppose that the all eigenvalues of matrix $\textbf{K}$ satisfy $|arg(\lambda(\textbf{K})|>\frac{q \pi}{2}$, then there exists a positive constant $C$ such that
+\begin{eqnarray*}
+\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}\|_{\infty}ds\leq C, ~t\in [0,T].
+\end{eqnarray*}
+\end{lemma}
+\textbf{Proof of Theorem \ref{uyo0}:} We know
+\begin{eqnarray}\label{ki1q}
+\left[
+  \begin{array}{c}
+    \textbf{v}_1^{(q)}(t)\\
+    \textbf{0}\\
+  \end{array}
+\right]=\left[
+                 \begin{array}{c}
+                  \textbf{v}_{\mathbf{A}}(t) \\
+                   \textbf{v}_2(t) \\
+                 \end{array}
+               \right]+\left[
+                         \begin{array}{c}
+                           \Psi(\textbf{v}_1(t))+\textbf{F}(t) \\
+                           -\textbf{H}(t) \\
+                         \end{array}
+                       \right]
+\end{eqnarray}
+From (\ref{ki1q1}) and (\ref{ki1q}), we obtain $\textbf{e}_{2}(t)=\textbf{v}_{2}(t)-\widehat{\textbf{v}}_2(t)=0$,
+and
+\begin{eqnarray}\label{wer1}
+\textbf{v}^{(q)}_{1}(t)-\widehat{\textbf{v}}^{(q )}_1(t)&=&\textbf{v}_{\mathbf{A}}(t)-\textbf{K}^{(\Omega)}_{\mathbf{A}}\widehat{\textbf{v}}_1(t)-\textbf{K}^{(\partial \Omega)}_{\mathbf{A}}\widehat{\textbf{v}}_2(t)-\Psi(\widehat{\textbf{v}}_1(t))+\Psi(\textbf{v}_1(t))\nonumber\\
+&=&\textbf{v}_{\mathbf{A}}(t)-\textbf{K}^{(\Omega)}_{\mathbf{A}}\widehat{\textbf{v}}_1(t)-\textbf{K}^{(\partial \Omega)}_{\mathbf{A}}\widehat{\textbf{v}}_2(t)-\textbf{K}_{\mathbf{A}}\textbf{v}(t)+\textbf{K}_{\mathbf{A}}\textbf{v}(t)-\Psi(\widehat{\textbf{v}}_1(t))+\Psi(\textbf{v}_1(t))\nonumber\\
+&=&\textbf{v}_{\mathbf{A}}(t)-\textbf{K}_{\mathbf{A}}\textbf{v}(t)-\Psi(\widehat{\textbf{v}}_1(t))+\Psi(\textbf{v}_1(t))-\textbf{K}^{(\Omega)}_{\mathbf{A}}(\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t)).
+\end{eqnarray}
+ We also have
+\begin{eqnarray}\label{wer2}
+    \textbf{e}_{1}(0)= \textbf{0},
+                                                                    \end{eqnarray}
+Using (\ref{wer1}) and (\ref{wer2}), we get the following matrix fractional differential problem:
+\begin{eqnarray}\label{wersd}
+  \textbf{e}^{(q)}_{1}(t)=\textbf{K}^{(\Omega)}_{\mathbf{A}}\textbf{e}_{1}(t)+\textbf{v}_{\mathbf{A}}(t)-\textbf{K}_{\mathbf{A}}\textbf{v}(t)-\Psi(\widehat{\textbf{v}}_1(t))+\Psi(\textbf{v}_1(t)), t \in (0,t_{F}],
+\end{eqnarray}
+coupled with standard initial conditions of Cauchy type
+\begin{eqnarray}\label{wersd1}
+  \textbf{e}_{1}(0)= \textbf{0},
+                                                                    \end{eqnarray}
+                                                                    where $\textbf{e}_{1}(t)=\textbf{v}_{1}(t)-\widehat{\textbf{v}}_1(t).$
+We can formulate the exact solution of (\ref{wersd})-(\ref{wersd1}) as
+\begin{eqnarray*}
+ \textbf{e}_{1}(t)=
+    e_{q,1 }(t;\textbf{K}^{(\Omega)}_{\mathbf{A}} )\textbf{e}_{1}(0)+e_{q,q }(t;\textbf{K}^{(\Omega)}_{\mathbf{A}})*(\textbf{v}_{\mathbf{A}}(t)-\textbf{K}_{\mathbf{A}}\textbf{v}(t)-\Psi(\widehat{\textbf{v}}_1(t))+\Psi(\textbf{v}_1(t))), & 0<q<1.
+\end{eqnarray*}
+We can obtain
+\begin{eqnarray}\label{ret1z}
+\|\textbf{e}_{1}(t)\|_{\infty}\leq C_{q ,\textbf{K}^{(\Omega)}_{\mathbf{A}}}\max_{0\leq s \leq t} \|\textbf{v}_{\mathbf{A}}(s)-\textbf{K}_{\mathbf{A}}\textbf{v}(s)\|_{\infty}+C_{lip}\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})\|_{\infty}\|\textbf{e}_{1}(s)\|_{\infty}ds,\nonumber
+\end{eqnarray}
+where
+\begin{eqnarray}
+C_{q ,\textbf{K}^{(\Omega)}_{\mathbf{A}}}= \|\int_{0}^{t}(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})ds\|_{\infty}
+\end{eqnarray}
+Using Gronwall inequality, we obtain
+\begin{eqnarray}\label{ret1z}
+\|\textbf{e}_{1}(t)\|_{\infty}\leq C_{q ,\textbf{K}^{(\Omega)}_{\mathbf{A}}}\max_{0\leq s \leq t} \|\textbf{v}_{\mathbf{A}}(s)-\textbf{K}_{\mathbf{A}}\textbf{v}(s)\|_{\infty}\exp\left(C_{lip}\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})\|_{\infty}ds\right).\nonumber
+\end{eqnarray}
+We use Lemma \ref{lem-4-3} to obtain an upper bound  for $\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})\|_{\infty}ds$. Since all eigenvalues of matrix $\textbf{K}^{(\Omega)}_{\mathbf{A}}$ satisfy $|arg(\lambda(\textbf{K}^{(\Omega)}_{\mathbf{A}}))|>\frac{q \pi}{2}$, then there exists a positive constant $C$ such that
+\begin{eqnarray*}
+\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})\|_{\infty}ds\leq C, ~t\in [0,T],
+\end{eqnarray*}
+ therefore
+\[\exp\left(C_{lip}\int_{0}^{t}\|(t-s)^{q -1}E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})\|_{\infty}ds\right)\leq C,~(as~t \rightarrow \infty).\]
+We can express the matrix Mittag-Leffler function $E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})$  by Cauchy's formula \cite{Higham}
+\begin{eqnarray}\label{kj1-1}
+E_{q,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})=\frac{1}{2\pi i}\oint_{\Gamma}E_{q,q }(z(t-s)^{q })(z\textbf{I}-\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}dz.
+\end{eqnarray}
+where $\Gamma$ is a closed contour that strictly encloses the spectrum of $\textbf{K}^{(\Omega)}_{\mathbf{A}}$.\\
+Using (\ref{kj1-1}), we have
+\begin{eqnarray*}
+\int_{0}^{t}(t-s)^{q -1}E_{q ,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})ds&=&\int_{0}^{t}(t-s)^{q -1}\frac{1}{2\pi i}\oint_{\Gamma}E_{q,q }(z(t-s)^{q })(z\textbf{I}-\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}dzds\nonumber\\
+&=&\frac{1}{2\pi i}\oint_{\Gamma}\left(\int_{0}^{t}(t-s)^{q -1}E_{q,q }(z(t-s)^{q })ds\right)(z\textbf{I}-\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}dz.
+\end{eqnarray*}
+Using Lemma \ref{lemma1-1}, we have
+\begin{eqnarray}\label{wer4z}
+\int_{0}^{t}(t-s)^{q -1}E_{q ,q }(z(t-s)^{q })ds=-(z^{-1})(1-E_{q ,1 }(zt^{q }))\rightarrow -z^{-1}~ (as ~t \rightarrow \infty,~|arg(z)|>\frac{q \pi}{2}).
+\end{eqnarray}
+Since $|arg(\lambda(\textbf{K}^{(\Omega)}_{\mathbf{A}}))|>\frac{q \pi}{2}$, then we have
+\begin{eqnarray*}
+\int_{0}^{\infty}(t-s)^{q -1}E_{q ,q }((t-s)^{q }\textbf{K}^{(\Omega)}_{\mathbf{A}})ds&=&\frac{1}{2\pi i}\oint_{\Gamma}\left(\int_{0}^{\infty}(t-s)^{q -1}E_{q,q }(z(t-s)^{q })ds\right)(z\textbf{I}-\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}dz\nonumber\\
+&=&\frac{1}{2\pi i}\oint_{\Gamma}(-z^{-1})(z\textbf{I}-\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}dz=-(\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}.
+\end{eqnarray*}
+Then for sufficiently large values of $t$, it follows that
+\begin{eqnarray}\label{ret11}
+\|\textbf{e}_{1}(t)\|_{\infty}\leq  \|(\textbf{K}^{(\Omega)}_{\mathbf{A}})^{-1}\|_{\infty}\max_{0\leq s \leq t} \|\textbf{v}_{\mathbf{A}}(s)-\textbf{K}_{\mathbf{A}}\textbf{v}(s)\|_{\infty}.
+\end{eqnarray}
+\section{Numerical Simulation and Discussion}\label{Sec4}
+In this section, we illustrate the results for a numerical example using the proposed method. To approximate the solution, we obtain numerical results by Matlab R2015a to calculate numerical examples on a laptop with a processor 2.00GHz and memory 4G running Intel core i3-5005U CPU. We measure two types of errors to assess the accuracy of the suggested method. The maximum error (MAE)
+\begin{equation*}
+MAE=\Vert \widehat{v}^{N_t}-v(t_{N_t})\Vert_{\infty},
+\end{equation*}
+and the root mean square error(RMSE)
+\begin{equation*}
+RMSE=\frac{1}{M}\Vert \widehat{v}^{N_t}-v(t_{N_t})\Vert_{2}.
+\end{equation*}
+ If $e_{k}$ is the error vector in the $k$ step, Then the computational orders of convergence indexed in the tables are computed using the formula
+\begin{equation*}
+Rate=\frac{\log(e_{k-1}/e_{k})}{\log(t_{k-1}/t_{k})}, ~~~k=2,3,\cdots.
+\end{equation*}
+\begin{example}
+Suppose that $\sigma_1=\sigma_2=\lambda=1$. Consider the following terms for the problem (\ref{1})-(\ref{3}) given by
+\begin{small}
+\begin{eqnarray}%\label{e3}
+\left\{ {\begin{array}{ll}
+\Psi(v)=v^2,\\
+h(\x,t)=t^{q}\sin(x_1)\sin(x_2),\\
+g(\x)=0,
+\end{array} } \right.\nonumber
+ \end{eqnarray}
+ \end{small}
+In the numerical example considered, we consider the function $v(x_1,x_2,t)=t^{q}\sin(x_1)\sin(x_2)$ as a true solution to the problem. The right-hand side function $f$ is given function according to the true solution. We consider the following domains:
+\begin{align*}\label{D1}
+\Omega_{1}&=\lbrace \x=(x_{1},x_{2}):-0.5\leq x_{1},x_{2}\leq 0.5\rbrace,\\
+\Omega_{2}&=\lbrace (r,\theta):0\leq r\leq \sin (7\theta), ~0 \leq \theta <2\pi\rbrace.\nonumber
+\end{align*}
+with a sequence of uniformly distributed grid nodes and quasi-random Halton points.
+Schematic diagrams of these domains for Halton points and a set of PU patches are shown in Figures \ref{fig_dom}.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=6.0cm,height=5.8cm]{fig/R_Domain_patch_h.eps}
+\includegraphics[width=6.0cm,height=5.8cm]{fig/G_Domain_patch_h.eps}
+\caption{Schematic diagrams of domains $\Omega_1$ and $\Omega_2$ with Halton points and partitioning of domains with circular patches.}\label{fig_dom}
+\end{figure}
+\begin{table}[!h]
+\centering
+\begin{tabular}{ c | c c c c c c c c c c}
+  \hline
+ &{Domain $\Omega_1$} & & & & & { Domain $\Omega_2$}& &&\\
+  \cline{2-4} \cline{7-9}
+{$\delta t$} & {$RMSE$} & {$MAE$} & {Rate}  & {CPU}&& {$RMSE$} & {$MAE$} & {Rate} & {CPU} \\ \hline
+{$\frac{1}{40}$} & {$3.5937e-03$} & {$5.1781e-03$} & {-}  & {1.2116}&& {$1.2716e-03$} & {$2.5484e-03$} & {-}  & {1.7729}\\ 
+{$\frac{1}{80}$} & {$1.7941e-03$} & {$2.5874e-03$} & {1.0009}  & {2.3378}&& {$6.2242e-04$} & {$1.2687e-03$} & {1.0062}  & {2.9570}\\ 
+{$\frac{1}{160}$} & {$8.9538e-04$} & {$1.2933e-03$} & {1.0005}  & {7.5092}&& {$2.9860e-04$} & {$6.2949e-04$} & {1.0111}  & {8.5347}\\ 
+{$\frac{1}{320}$} & {$4.4669e-04$} & {$6.4655e-04$} & {1.0002}  & {23.6568}&& {$1.3784e-04$} & {$3.1002e-04$} & {1.0218}  & {31.4793}\\ 
+{$\frac{1}{640}$} & {$2.2330e-04$} & {$3.2325e-04$} & {1.0001}  & {93.1709}&& {$6.0286e-05$} & {$1.5033e-04$} & {1.0443}  & {113.9058} \\ 
+{$\frac{1}{1280}$} & {$1.1344e-04$} & {$1.6162e-04$} & {1.0001}  & {405.6648}&& {$2.9641e-05$} & {$7.0488e-05$} & {1.0926}  & {369.5443}\\ 
+\hline
+\end{tabular}
+\caption{The obtained error, Rate and CPU time for different values of $\delta t$ and $h=0.1$ on domains $\Omega_1$ and $\Omega_2$.}
+\label{table1}
+\end{table}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.66]{fig/R-RMS}~~~~~~~~~
+\includegraphics[scale=.66]{fig/G_RMS}
+\caption{RMSE with respect to the number of partitions using $q = 0.9$, $\delta t = 0.1$ and $T=1$ on domain $\Omega_1$ (left) and on domain $\Omega_2$ (right).}
+\label{fig_con}
+\end{figure}
+A PU covering $\lbrace \Omega _{i} \rbrace$ is produced by balls $B(\omega _{i},\delta _{i})$, where $\lbrace \omega _{i}\rbrace _{i=1}^{N_c}$ is a quasi-uniform set of patches centres with fill distance $h_{cov}$ that is depended on $h$. To determine the radius of each patch, we put $\delta _{i}=C_{ovlp}h_{cov}$, where $C_{ovlp}\geq 1$ is an overlapping constant. The condition of being greater than one should be established to certify both liability $\Omega \subset \Omega _{i}$ and the accuracy of local approximates.\\
+We define the constant-generated PU functions
+\begin{align*}
+\omega _{i}(x)=\left\{
+                 \begin{array}{ll}
+                   1, & i=I_{\min,1}(x), \\
+                   0, & otherwise,
+                 \end{array}
+               \right.
+\end{align*}
+as weight function, where $I_{\min,1}(x)$ is the first component of $I_{\min}(x)=argmin_{i\in I(x)}\Vert x-\omega _{i}\Vert_{2}$. Also $I_{\min}(x)$ may contain more than one index $i$.\\
+The Polyharmonic spline kernel with augmented polynomials of different degrees is used as a basis function for constructing unique approximations at local patches. The numerical experiments indicate how the degree of polynomials affects the order of convergence. Figures \ref{fig_eig} depict the distribution of eigenvalues of the matrix $\textbf{K}_{L}^{(\Omega)}$ for domains $\Omega_1$ and $\Omega_2$, which show that the real parts of the eigenvalues are negative.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.6]{fig/R_eig.eps}~~~~~~~~~~
+\includegraphics[scale=.6]{fig/G_eig.eps}
+\caption{The distribution of eigenvalues of the matrix $\textbf{K}_{L}^{(\Omega)}$ for domain $\Omega_1$ (left) and domain $\Omega_2$ (right).} \label{fig_eig}
+\end{figure}
+ In Figures \ref{fig_con}, the error behavior of our RBF-PU scheme concerning the number of points has been investigated. Further, the property scalability for the PHS kernel has been used to stabilize the method.\\
+We depict the RMSE, the convergence rate, and CPU time for the variant values of time steps in Table \ref{table1}.
+\end{example}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{amsplain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Please cite your relevant papers but at most total 5 papers/books.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{25}
+\bibitem{Monagha} Gingold, R. A., and Monaghan, J. J. (1977). Smoothed particle hydrodynamics: theory and application to non-spherical stars. Monthly notices of the royal astronomical society, 181(3), 375-389.
+
+\bibitem{Belytschko} Belytschko, T., Lu, Y. Y., and Gu, L. (1994). Element‐free Galerkin methods. International journal for numerical methods in engineering, 37(2), 229-256.
+
+\bibitem{Atluri} Atluri, S. N., Kim, H. G., and Cho, J. Y. (1999). A critical assessment of the truly meshless local Petrov-Galerkin (MLPG), and local boundary integral equation (LBIE) methods. Computational mechanics, 24, 348-372.
+
+\bibitem{Rieger1} Rieger, Christian, and Barbara Zwicknagl. "Sampling inequalities for infinitely smooth functions, with applications to interpolation and machine learning." Advances in Computational Mathematics 32 (2010): 103-129.
+
+\bibitem{Rieger2} Rieger, Christian, and Barbara Zwicknag. "Improved exponential convergence rates by oversampling near the boundary." Constructive Approximation 39 (2014): 323-341
+
+\bibitem{Fornberg} Fornberg, Bengt, and Natasha Flyer. "Solving PDEs with radial basis functions." Acta Numerica 24 (2015): 215-258.
+
+\bibitem{Shepard}Shepard, Donald. "A two-dimensional interpolation function for irregularly-spaced data." Proceedings of the 1968 23rd ACM national conference. 1968
+
+\bibitem{lkio1} De la Sen, M. (2011). About Robust Stability of Caputo Linear Fractional Dynamic Systems with Time Delays through Fixed Point Theory. Fixed Point Theory and Applications, 2011(1), 867932.
+\bibitem{Huang-Stynes} Superconvergence of a Finite Element Method for the
+Multi-term Time-Fractional Diffusion Problem
+
+\bibitem{refk1} Davoud Mirzaei. (2021). The Direct Radial Basis Function Partition of Unity (D-RBF-PU) Method for Solving PDEs. SIAM Journal on Scientific Computing, 43(1), A54-A83.
+
+\bibitem{Jong} Jong, SG., Choe, HC. \& Ri, YD. (2021). A New Approach for an Analytical Solution for a System of Multi-term Linear Fractional Differential Equations. Iran J Sci Technol Trans Sci 45, 955-964.
+\bibitem{Pod}   Podlubny, I. (1999). Fractional Differential Equations. Academic Press, New York.
+\bibitem{Higham} Higham, N. J. (2008). Functions of matrices. Society for Industrial and Applied Mathematics (SIAM): Philadelphia,
+PA, USA.
+\bibitem{Quin}  Qian, D., Li, C., Agarwal, R. P., \& Patricia. (2010). Stability analysis of fractional differential system with Riemann-Liouville derivative. 52(5-6), 862-874.
+ \bibitem{alikhonov} Alikhanov, A.A. A new difference scheme for the time fractional diffusion equation.
+J. Comput. Phys. 2015, 280, 424-438.
+\end{thebibliography}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
