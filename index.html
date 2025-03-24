@@ -1,13 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My GitHub Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Music</title>
     <style>
-        body { font-family: Arial; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+        }
+        .music-player {
+            margin: 30px auto;
+            width: 80%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        audio {
+            width: 100%;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to My Site!</h1>
-    <p>This is hosted on GitHub Pages</p>
+    <header>
+        <h1>Welcome to My Music</h1>
+    </header>
+    
+    <div class="music-player">
+        <h2>Latest Track</h2>
+        <p>Song Title - Artist Name</p>
+        <audio controls>
+            <source src="your-song.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    
+    <div class="music-player">
+        <h2>Popular Tracks</h2>
+        <ul style="list-style-type: none; padding: 0;">
+            <li>Track 1</li>
+            <li>Track 2</li>
+            <li>Track 3</li>
+        </ul>
+    </div>
 </body>
 </html>
